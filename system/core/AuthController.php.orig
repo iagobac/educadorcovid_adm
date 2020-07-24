@@ -1,0 +1,103 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class AuthController extends CI_Controller
+{
+    public function __construct()
+    {
+
+        $PATHS = array();
+
+        $ADMINPATHS = array("home",'justificativa','log','unidade','agrupamento','agrupamentoArquivado',
+            'imovel','imovelArquivado','unidadeArquivada','relatorio');
+
+        $GESTORPATHS = array("home",'fonteRecurso','unidade','agrupamento','agrupamentoArquivado',
+            'imovel','imovelArquivado','unidadeArquivada','relatorio');
+
+        $COORDENADOR = array("home",'afastamento','justificativa','log','fonteRecurso','unidade','agrupamento','agrupamentoArquivado',
+            'imovel','imovelArquivado','unidadeArquivada','relatorio');
+
+        //$GESTORPATHS = array('home','unidade','relatorio');
+        //$COORDENADOR = array('home','unidade','relatorio');
+
+        $PATHS['admin'] = $ADMINPATHS;
+        $PATHS['gestor'] = $GESTORPATHS;
+        $PATHS['coordenador'] = $COORDENADOR;
+
+        parent::__construct();
+
+        // server should keep session data for AT LEAST 1 hour
+        ini_set('session.gc_maxlifetime', 3600);
+
+        // each client should remember their session id for EXACTLY 1 hour
+        session_set_cookie_params(3600);
+        session_start();
+        $this->load->helper("url_helper");
+        //$this->redirectIfNoSession();
+        $this->checkPrivileges($PATHS);
+
+    }
+
+    private function redirectIfNoSession()
+    {
+        if (!isset($_SESSION["user"])) {
+            redirect("https://webcrato.crato.ce.gov.br");
+        }
+    }
+
+    private function endsWith($palavra, $parte)
+    {
+        $length = strlen($parte);
+
+        return $length === 0 ||
+            (substr($palavra, -$length) === $parte);
+    }
+
+    private function checkPrivileges($PATHS)
+    {
+        $level = $_SESSION['user']['sigerh']['level'];
+
+        if ($level == "6") { //Coordenador
+            $found = false;
+            foreach ($PATHS['coordenador'] as $path) {
+                if (strpos(current_url(), $path) !== false || $this->endsWith(current_url(), 'index.php')) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                redirect("https://webcrato.crato.ce.gov.br");
+            }
+        }
+
+
+        if ($level == "4") { //Gestor
+            $found = false;
+            foreach ($PATHS['gestor'] as $path) {
+                if (strpos(current_url(), $path) !== false || $this->endsWith(current_url(), 'index.php')) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                redirect("https://webcrato.crato.ce.gov.br");
+            }
+        }
+
+        if ($level == "2" || $level == "1") { //Admin
+            $found = false;
+            foreach ($PATHS['admin'] as $path) {
+                if (strpos(current_url(), $path) !== false || $this->endsWith(current_url(), 'index.php')) {
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                redirect("https://webcrato.crato.ce.gov.br");
+            }
+        }
+    }
+
+
+
+}

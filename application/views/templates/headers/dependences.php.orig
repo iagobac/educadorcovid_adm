@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="include/bootstrap4/css/bootstrap.css?43321">
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">-->
+    <link type="text/css" href="include/bootstrap4/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="include/bootstrap-dynamic-tabs/bootstrap-dynamic-tabs.css">
+    <link rel="stylesheet" href="include/css/cuam.css?33321">
+    <!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" />-->
+    <link type="text/css" href="include/dataTables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.bootstrap4.min.css" />-->
+    <link type="text/css" href="include/dataTables/DataTables-1.10.16/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    <!--o link abaixo serve para a expansividade do datatabel-->
+    <link type="text/css" href="include/dataTables/DataTables-1.10.16/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.18/b-1.5.2/b-colvis-1.5.2/b-html5-1.5.2/b-print-1.5.2/cr-1.5.0/r-2.2.2/datatables.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <link href="  https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.sumoselect/3.0.2/sumoselect.min.css">
+
+    <title>SIG-CUAM - Sistema Integrado de Gestão de Cadastro de unidades Administravias</title>
+</head>
