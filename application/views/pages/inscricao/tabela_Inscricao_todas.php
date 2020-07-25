@@ -20,7 +20,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php preencher_tabela_inscricao($inscricoes); ?>
+            <?php preencher_tabela_inscricao_todas($inscricoes); ?>
         </tbody>
         <tfoot>
             <tr>

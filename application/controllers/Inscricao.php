@@ -12,7 +12,7 @@ class Inscricao extends AuthController {
     }
 
     public function index() {
-//
+
 //        $data['serie'] = $this->inscricao_model->get_all_info('serie');
 //        $data['semana'] = $this->inscricao_model->get_all_info('semana_aula');
 //        $data['tipo_inscricao'] = $this->inscricao_model->get_all_info('inscricao_tipo');
@@ -21,82 +21,79 @@ class Inscricao extends AuthController {
 
     public function listar_todas() {
         $data['inscricoes'] = $this->inscricao_model->get_inscricoes('all');
+        foreach ($data['inscricoes'] as $insc=>$chave){
+            echo '<pre>';print_r($chave);
+            $data['inscricoes'][$insc] = cvt_data_br($chave['dt_nascimento']);
+        }
         $data['inscricoes_tipo'] = 'all';
-        $this->load->view('pages/inscricao/inscricao', $data);
+        $this->load->view('pages/inscricao/inscricao_todas', $data);
     }
 
     public function listar_pendentes() {
         $data['inscricoes'] = $this->inscricao_model->get_inscricoes('pend');
         $data['inscricoes_tipo'] = 'pend';
-        $this->load->view('pages/inscricao/inscricao', $data);
+        $this->load->view('pages/inscricao/inscricao_pendente', $data);
     }
 
     public function listar_deferidas() {
         $data['inscricoes'] = $this->inscricao_model->get_inscricoes('def');
         $data['inscricoes_tipo'] = 'def';
-        $this->load->view('pages/inscricao/inscricao', $data);
+        $this->load->view('pages/inscricao/inscricao_deferida', $data);
     }
 
     public function listar_indeferidas() {
         $data['inscricoes'] = $this->inscricao_model->get_inscricoes('indef');
         $data['inscricoes_tipo'] = 'indef';
-        $this->load->view('pages/inscricao/inscricao', $data);
+        $this->load->view('pages/inscricao/inscricao_indeferida', $data);
     }
 
-    public function salvar_inscricao() {
+    public function deferir_indeferir_inscricao() {
         $dados = $this->input->post();
-
-        if ($dados['inscricao_tipo'] == 1) {
-            $config = array();
-            $config['upload_path'] = './uploads';
-            $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx';
-            $config['max_size'] = '20000';
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-
-
-            if (!$this->upload->do_upload('inscricao_arquivo')) {
-                $retorno = array('status' => 0, 'mensagem' => $this->upload->display_errors());
-            } else {
-
-                $dadosArquivo = $this->upload->data();
-                $partesArquivo = explode(".", $dadosArquivo['file_name']);
-                $novoNomeArquivo = 'inscricao_' . md5(time()) . "." . $partesArquivo[1];
-                rename('./uploads/' . $dadosArquivo['file_name'], './uploads/' . $novoNomeArquivo);
-                $dados['inscricao_file_link'] = $novoNomeArquivo;
-
-                if ($this->inscricao_model->salvar_inscricao($dados)) {
-                    $retorno = array('status' => 1, 'mensagem' => mensagem_sucesso('salvar'));
-                } else {
-                    $retorno = array('status' => 0, 'mensagem' => mensagem_erro('banco'));
-                }
-            }
+        if ($this->inscricao_model->deferir_indeferir($dados)) {
+            $retorno = array('status' => 1, 'mensagem' => mensagem_sucesso('salvar'));
         } else {
-            if ($this->inscricao_model->salvar_inscricao($dados)) {
-                $retorno = array('status' => 1, 'mensagem' => mensagem_sucesso('salvar'));
-            } else {
-                $retorno = array('status' => 0, 'mensagem' => mensagem_erro('banco'));
-            }
+            $retorno = array('status' => 0, 'mensagem' => mensagem_erro('banco'));
         }
         echo json_encode($retorno);
     }
 
-    public function tabela_inscricao() {
-        $data['inscricao'] = $this->inscricao_model->get_all_inscricao();
-        $this->load->view('pages/inscricao/tabela_inscricao', $data);
+    public function tabela_todas() {
+        $data['inscricoes'] = $this->inscricao_model->get_inscricoes('all');
+        $this->load->view('pages/inscricao/tabela_Inscricao_todas', $data);
+    }
+
+    public function tabela_pendentes() {
+        $data['inscricoes'] = $this->inscricao_model->get_inscricoes('pend');
+        $this->load->view('pages/inscricao/tabela_Inscricao_pendentes', $data);
+    }
+
+    public function tabela_def() {
+        $data['inscricoes'] = $this->inscricao_model->get_inscricoes('def');
+        $this->load->view('pages/inscricao/tabela_Inscricao_deferidas', $data);
+    }
+
+    public function tabela_indef() {
+        $data['inscricoes'] = $this->inscricao_model->get_inscricoes('indef');
+        $this->load->view('pages/inscricao/tabela_Inscricao_indeferidas', $data);
     }
 
     public function get_one_inscricao() {
         $id = $this->input->post('id');
         $inscricao = $this->inscricao_model->get_one_inscricao($id);
 
+        if ($inscricao->cadunico == 1) {
+            $cad = $this->inscricao_model->get_cad_info($inscricao->cpf);
+        } else {
+            $cad = 0;
+        }
+        $inscricao->id = str_pad($inscricao->id, 7, '0', STR_PAD_LEFT);
+
         if ($inscricao) {
-            $retorno = array('status' => 1, 'inscricao' => $inscricao);
+            $retorno = array('status' => 1, 'inscricao' => $inscricao, 'cad' => $cad);
         } else {
             $retorno = array('status' => 0, 'mensagem' => mensagem_erro('get_dados'));
         }
         echo json_encode($retorno);
     }
-
 
 }

@@ -15,12 +15,11 @@
                 <th scope="col"style="width: 10%" class="text-center">CADUNICO?</th>
                 <th scope="col" class="text-center">RENDA</th>
                 <th scope="col" class="text-center">STATUS</th>
-                <th scope="col" class="column-invisivel">MOTIVO</th>
-                <th scope="col" class="text-center tabela_opcoes">DOCUMENTOS</th>
+                <th scope="col" class="">MOTIVO</th>
             </tr>
         </thead>
         <tbody>
-            <?php preencher_tabela_inscricao($inscricoes); ?>
+            <?php preencher_tabela_inscricao_indef($inscricoes); ?>
         </tbody>
         <tfoot>
             <tr>
@@ -34,8 +33,7 @@
                 <th scope="col" style="width: 10%" class="text-center">CADUNICO?</th>
                 <th scope="col" class="text-center">RENDA</th>
                 <th scope="col" class="text-center">STATUS</th>
-                <th scope="col" class="column-invisivel">MOTIVO</th>
-                <th scope="col" class="text-center tabela_opcoes">DOCUMENTOS</th>
+                <th scope="col" class="">MOTIVO</th>
             </tr>
         </tfoot>
     </table>
